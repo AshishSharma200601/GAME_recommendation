@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game Recommender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="wrap" data-csv-path="/mnt/data/bb93fff5-1e5e-46a8-a575-ed550f26360c.csv">
+    <header>
+      <div class="logo"></div>
+      <div style="flex:1">
+        <h1>Game Recommender</h1>
+        <div style="color:var(--muted); font-size:.95rem;">
+          Rev up your search — cinematic racing game vibe 🏁
+        </div>
+      </div>
+      <div class="user-menu">
+        <span class="username">👤 {{ username }}</span>
+        <a href="{{ url_for('logout') }}" class="logout-btn ghost" title="Logout">Logout</a>
+      </div>
+    </header>
+
+    <div class="panel">
+      <div class="controls">
+        <div class="control-group">
+          <label>🔍 Search Games</label>
+          <input id="q" placeholder="racing, open-world, shooter..." />
+        </div>
+        <div class="control-group">
+          <label>🎮 Genre</label>
+          <input id="genre" placeholder="Action, Racing, RPG..." />
+        </div>
+        <div class="control-group">
+          <label>💻 Platform</label>
+          <input id="platform" placeholder="PC, PS5, Xbox..." />
+        </div>
+        <div class="control-group">
+          <label>💰 Max Price</label>
+          <input id="max_price" type="number" step="0.01" placeholder="e.g., 30" />
+        </div>
+        <div class="control-group">
+          <label>⭐ Min Rating</label>
+          <input id="min_rating" type="number" step="0.1" min="0" max="5" placeholder="e.g., 4.0" />
+        </div>
+        <div class="control-group">
+          <label>📊 Results</label>
+          <input id="k" type="number" value="12" min="1" max="100" />
+        </div>
+      </div>
+
+      <div class="sort-controls">
+        <label>Sort by:</label>
+        <select id="sortBy" class="sort-select">
+          <option value="relevance">Relevance</option>
+          <option value="rating">Rating (High to Low)</option>
+          <option value="rating_asc">Rating (Low to High)</option>
+          <option value="price">Price (Low to High)</option>
+          <option value="price_desc">Price (High to Low)</option>
+          <option value="year">Year (Newest)</option>
+          <option value="year_asc">Year (Oldest)</option>
+          <option value="reviews">Most Reviews</option>
+        </select>
+      </div>
+
+      <div class="btn-center">
+        <button id="btn" class="primary-btn">
+          <span class="btn-icon">🏁</span>
+          <span>Recommend Games</span>
+        </button>
+        <button id="clearBtn" class="ghost" title="Clear all filters">Clear Filters</button>
+      </div>
+    </div>
+
+    <div id="stats" class="stats-bar" style="display:none;">
+      <div class="stat-item">
+        <span class="stat-label">Total Games:</span>
+        <span class="stat-value" id="totalGames">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Showing:</span>
+        <span class="stat-value" id="showingGames">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Avg Rating:</span>
+        <span class="stat-value" id="avgRating">—</span>
+      </div>
+    </div>
+
+    <div id="results" class="grid" aria-live="polite"></div>
+    <div id="empty" class="empty" style="display:none;">
+      <div class="empty-icon">🎮</div>
+      <h3>No games found</h3>
+      <p>Try adjusting your filters or search query to find more games!</p>
+    </div>
+    <div class="load-more-container">
+      <button id="loadMore" class="load-more-btn" style="display:none;">
+        <span>Load More Games</span>
+        <span class="load-icon">↓</span>
+      </button>
+    </div>
+
+    <footer>
+      <div class="small">Dataset: <code id="csvPath">/mnt/data/bb93fff5-1e5e-46a8-a575-ed550f26360c.csv</code></div>
+      <div class="small">Tip: leave query blank to view most popular titles</div>
+    </footer>
+  </div>
+
+  <!-- Externalized JS: improved UI behaviors (debounce, spinner, modal) -->
+  <div id="modal" class="modal" aria-hidden="true" style="display:none;">
+    <div class="modal-backdrop"></div>
+    <div class="modal-card panel">
+      <button id="modalClose" class="modal-close" aria-label="Close">×</button>
+      <div class="modal-header">
+        <h2 id="modalTitle"></h2>
+        <div id="modalRating" class="modal-rating"></div>
+      </div>
+      <div id="modalBody" class="modal-body"></div>
+      <div id="modalMeta" class="modal-meta"></div>
+      <div id="modalTags" class="modal-tags"></div>
+    </div>
+  </div>
+
+  <div id="spinner" class="spinner" style="display:none;" aria-hidden="true"></div>
+
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

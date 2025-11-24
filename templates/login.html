@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Game Recommender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-card panel">
+      <div class="login-header">
+        <div class="logo"></div>
+        <h1>Game Recommender</h1>
+        <p class="login-subtitle">Sign in to discover your next favorite game</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="alert-container">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                <span class="alert-icon">{{ '⚠️' if category == 'error' else '✅' }}</span>
+                <span>{{ message }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form id="loginForm" method="POST" action="{{ url_for('login') }}">
+        <div class="form-group">
+          <label for="username">👤 Username or Email</label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            placeholder="Enter your username or email" 
+            required 
+            autofocus
+            autocomplete="username"
+          />
+          <small class="form-hint">You can login with either your username or registered email</small>
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔒 Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Enter your password" 
+            required
+            autocomplete="current-password"
+          />
+        </div>
+
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" name="remember" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" class="forgot-link">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="login-btn primary-btn">
+          <span>🚀 Sign In</span>
+        </button>
+      </form>
+
+      <div class="login-divider">
+        <span>or</span>
+      </div>
+
+      <div class="register-section">
+        <p>Don't have an account?</p>
+        <a href="{{ url_for('register') }}" class="register-link">Create Account</a>
+      </div>
+    </div>
+
+    <div class="login-footer">
+      <p class="small">© 2024 Game Recommender • Discover your next adventure</p>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
+

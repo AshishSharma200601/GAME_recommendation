@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register - Game Recommender</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}" />
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-card panel">
+      <div class="login-header">
+        <div class="logo"></div>
+        <h1>Create Account</h1>
+        <p class="login-subtitle">Join us and discover amazing games</p>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="alert-container">
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }}">
+                <span class="alert-icon">{{ '⚠️' if category == 'error' else '✅' }}</span>
+                <span>{{ message }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      <form id="registerForm" method="POST" action="{{ url_for('register') }}">
+        <div class="form-group">
+          <label for="username">👤 Username</label>
+          <input 
+            type="text" 
+            id="username" 
+            name="username" 
+            placeholder="Choose a username" 
+            required 
+            autofocus
+            autocomplete="username"
+            minlength="3"
+            maxlength="20"
+          />
+          <small class="form-hint">3-20 characters, letters and numbers only</small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">📧 Email</label>
+          <input 
+            type="email" 
+            id="email" 
+            name="email" 
+            placeholder="your.email@example.com" 
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">🔒 Password</label>
+          <input 
+            type="password" 
+            id="password" 
+            name="password" 
+            placeholder="Create a strong password" 
+            required
+            autocomplete="new-password"
+            minlength="6"
+          />
+          <small class="form-hint">At least 6 characters</small>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm_password">🔒 Confirm Password</label>
+          <input 
+            type="password" 
+            id="confirm_password" 
+            name="confirm_password" 
+            placeholder="Confirm your password" 
+            required
+            autocomplete="new-password"
+          />
+        </div>
+
+        <button type="submit" class="login-btn primary-btn">
+          <span>✨ Create Account</span>
+        </button>
+      </form>
+
+      <div class="login-divider">
+        <span>or</span>
+      </div>
+
+      <div class="register-section">
+        <p>Already have an account?</p>
+        <a href="{{ url_for('login') }}" class="register-link">Sign In</a>
+      </div>
+    </div>
+
+    <div class="login-footer">
+      <p class="small">© 2024 Game Recommender • Discover your next adventure</p>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</body>
+</html>
+
